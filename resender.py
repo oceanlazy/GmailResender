@@ -7,7 +7,7 @@ from PyQt5.uic import loadUi
 from PyQt5.QtWidgets import QApplication, QMainWindow, QDesktopWidget, QTextEdit, QMessageBox
 
 
-class STUI(QMainWindow):
+class UI(QMainWindow):
     def __init__(self, *args):
         super().__init__(*args)
         loadUi('ui.ui', self)
@@ -46,8 +46,8 @@ class STUI(QMainWindow):
 
         result, data = mail_box.uid('search', None, 'ALL')
 
-        for mail_id in [int(inx) for inx in data[0].decode().split()][::1]:
-            _, data = mail_box.uid('fetch', str(mail_id), '(RFC822)')
+        for mail_id in [mail_id for mail_id in data[0].decode().split()][::1]:
+            _, data = mail_box.uid('fetch', mail_id, '(RFC822)')
 
             raw_email = data[0][1]
             mail = email.message_from_bytes(raw_email)
@@ -60,6 +60,6 @@ class STUI(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    widget = STUI()
+    widget = UI()
     widget.show()
     sys.exit(app.exec_())
